@@ -1,7 +1,6 @@
 from selenium import webdriver
 import chromedriver_autoinstaller
 import pages
-# import csv
 import json
 import re
 
@@ -25,8 +24,6 @@ for category in pages.categories:
     goods = []
     page_number = 1
     while True:
-        # if page_number > 1:
-        #     break
         page_url = pages.generate_page_for_category(category, page_number)
         driver.get(page_url)
         items = driver.find_elements_by_class_name('ProductCard__link')
@@ -48,21 +45,10 @@ for category in pages.categories:
                 proteins = number_helper(re.search(proteins_regexp, nutritional_value).group(0))
                 fats = number_helper(re.search(fats_regexp, nutritional_value).group(0))
                 carbs = number_helper(re.search(carbs_regexp, nutritional_value).group(0))
-                calories = number_helper(re.search(calories_regexp, nutritional_value).group(0))
-
-                # proteins = int(
-                #     ''.join(c for c in nutritional_value.split('белки')[1].split('г')[0].split(',')[0] if c.isdigit()))
-                # fats = int(
-                #     ''.join(c for c in nutritional_value.split('жиры')[1].split('г')[0].split(',')[0] if c.isdigit()))
-                # carbs = int(
-                #     ''.join(c for c in nutritional_value.split('углеводы')[1].split('г')[0].split(',')[0] if c.isdigit()))
-                # calories = int(
-                #     ''.join(c for c in nutritional_value.split('ккал')[0].split(';')[-1].split(',')[0] if c.isdigit()))
                 price = int(''.join(c for c in driver.find_element_by_class_name('Price__value').get_attribute("innerText").split('.')[0].split(',')[0] if c.isdigit()))
             except:
                 print ("Invalid good")
                 continue
-            # driver.back()
             goods.append({
                 'name': name.text,
                 'proteins': proteins,
@@ -74,13 +60,3 @@ for category in pages.categories:
             })
     with open('{}.json'.format(category), 'w', encoding='utf-8') as f:
         json.dump(goods, f, ensure_ascii=False)
-
-
-# goods_sorted = sorted(goods, key=lambda d: d['carbs'])
-# print(goods_sorted)
-# with open('out.csv', 'w', encoding='utf-8') as f:
-#     writer = csv.writer(f)
-#     writer.writerow(['Name', 'Proteins', 'Fats', 'Carbs', 'Calories', 'Href'])
-#     for item in goods_sorted:
-#         writer.writerow([item["name"].replace(",",""), item["proteins"], item["fats"], item["carbs"], item["calories"], item["href"]])
-#         # f.write("%s\n" % item)
