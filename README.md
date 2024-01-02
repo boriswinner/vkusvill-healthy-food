@@ -1,4 +1,8 @@
-# Nuxt 3 Minimal Starter
+# Catalog of Vkusvill products
+
+Web UI: https://vkusvill-goods.github.io/
+This projects consists of Web Crawler for Vkusvill site (run main.py, then put crawled files into /json subdirectory) and WEB UI (Nuxt 3 project)
+
 
 Look at the [Nuxt 3 documentation](https://nuxt.com/docs/getting-started/introduction) to learn more.
 
